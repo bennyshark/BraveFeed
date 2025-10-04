@@ -1,25 +1,24 @@
-import ModeToggle from "@/components/ModeToggle";
-import { Button } from "@/components/ui/button";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
-import { Inter, Roboto_Mono } from "next/font/google";
+import { getPosts } from "@/actions/post.action";
+import { getDbUserId } from "@/actions/user.action";
+import CreatePost from "@/components/CreatePost";
+import { currentUser } from "@clerk/nextjs/server";
 
-const geistSans = Inter({ subsets: ["latin"], variable: "--font-geist-sans" });
-const geistMono = Roboto_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
+export default async function Home() {
+  const user = await currentUser();
+  const posts = await getPosts();
+  const dbUserId = await getDbUserId();
 
-export default function Home() {
   return (
-    <div className="m-4">
-      <h1>Home page</h1>
+    <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+      <div className="lg:col-span-6">
+        {user ? <CreatePost /> : null}
+
+        
+      </div>
+
+      <div className="hidden lg:block lg:col-span-4 sticky top-20">
+  
+      </div>
     </div>
   );
 }
